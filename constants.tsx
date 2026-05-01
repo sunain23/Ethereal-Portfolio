@@ -226,11 +226,11 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "L'Affaire de Nuit"
     ],
     secondaryImageDescriptions: [
-      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative. The imagery utilizes dynamic, architectural angles and rich textures—plush faux fur, shimmering hosiery, and gold-accented leather—to establish a persona of untouchable, elite sophistication. It is a visual symphony of nocturnal opulence, capturing the magnetic allure of a muse who dominates both the grandest rooms and the quietest hours of the night.',
-      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative. The imagery utilizes dynamic, architectural angles and rich textures—plush faux fur, shimmering hosiery, and gold-accented leather—to establish a persona of untouchable, elite sophistication. It is a visual symphony of nocturnal opulence, capturing the magnetic allure of a muse who dominates both the grandest rooms and the quietest hours of the night.',
-      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative. The imagery utilizes dynamic, architectural angles and rich textures—plush faux fur, shimmering hosiery, and gold-accented leather—to establish a persona of untouchable, elite sophistication. It is a visual symphony of nocturnal opulence, capturing the magnetic allure of a muse who dominates both the grandest rooms and the quietest hours of the night.',
-      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative. The imagery utilizes dynamic, architectural angles and rich textures—plush faux fur, shimmering hosiery, and gold-accented leather—to establish a persona of untouchable, elite sophistication. It is a visual symphony of nocturnal opulence, capturing the magnetic allure of a muse who dominates both the grandest rooms and the quietest hours of the night.',
-      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative. The imagery utilizes dynamic, architectural angles and rich textures—plush faux fur, shimmering hosiery, and gold-accented leather—to establish a persona of untouchable, elite sophistication. It is a visual symphony of nocturnal opulence, capturing the magnetic allure of a muse who dominates both the grandest rooms and the quietest hours of the night.'
+      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative.',
+      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative.',
+      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative.',
+      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative.',
+      'This campaign serves as a provocative exploration of high-octane glamour, blending the sharp, flash-heavy aesthetic of a 2000s fashion editorial with a moody, cinematic noir narrative.'
     ],
     gfx: [
       'https://drive.google.com/file/d/13Ghy6PigOBQNUwujNGHxaoZQDSTZ-xj4/view?usp=sharing',
@@ -242,13 +242,13 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       'https://drive.google.com/file/d/1rGYNdxzbgx89z2j9JMAOLuz3nhzb8b3q/view?usp=sharing'
     ],
     gfxTitles: [
-      'Ad Campaigns',
-      'Ad Campaigns',
-      'Ad Campaigns',
-      'Ad Campaigns',
-      'Ad Campaigns',
-      'Ad Campaigns',
-      'Ad Campaigns'
+      'The Era of Muse',
+      'The Era of Muse',
+      'The Era of Muse',
+      'The Era of Muse',
+      'The Era of Muse',
+      'The Era of Muse',
+      'The Era of Muse'
     ],
     gfxDescriptions: [
       'A breathtaking exploration of contrast and shadow, blending classic film noir aesthetics with high-fashion editorial. The imagery highlights strength and allure, weaving a compelling story through dramatic lighting and striking poses. Beautifully composed frames invite viewers into a clandestine world of nocturnal elegance.',

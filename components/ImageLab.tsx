@@ -41,7 +41,7 @@ const ImageLab: React.FC = () => {
 
   return (
     <section id="ai-lab" className="py-32 px-6 bg-[#080808]">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         <div className="mb-20">
           <h2 className="text-4xl md:text-6xl serif font-bold mb-6">Neural Synthesis</h2>
           <p className="text-gray-500 uppercase tracking-widest text-sm">Experimental AI Image Generation Lab</p>

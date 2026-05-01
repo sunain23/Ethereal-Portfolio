@@ -74,7 +74,7 @@ const App: React.FC = () => {
       <main className="relative z-10">
         <Hero isDarkMode={isDarkMode} />
         
-        <div className="px-6 relative z-20">
+        <div className="w-full px-6 relative z-20">
           <div className={`h-px w-full transition-colors duration-700 ${isDarkMode ? 'bg-gradient-to-r from-transparent via-white/5 to-transparent' : 'bg-gradient-to-r from-transparent via-black/5 to-transparent'}`}></div>
         </div>
 

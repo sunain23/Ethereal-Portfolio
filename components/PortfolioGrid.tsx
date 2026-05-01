@@ -187,8 +187,10 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
     setIsTransitioning(true);
     setTimeout(() => {
       setActiveFilter(value);
-      setIsTransitioning(false);
-    }, 50);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 50);
+    }, 400);
   };
 
   const isYouTubeUrl = (url: string | undefined) => {
@@ -211,7 +213,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
 
     // We use youtube-nocookie.com for better privacy and to avoid some configuration errors
     // Removed enablejsapi and autoplay as defaults which often cause "Error 153"
-    return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+    return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&controls=1`;
   };
 
   const getGoogleDriveEmbedUrl = (url: string) => {
@@ -333,7 +335,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
       ref={sectionRef}
       className={`py-32 px-6 transition-colors duration-700 relative z-20 ${isDarkMode ? 'bg-black' : 'bg-white'}`}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         <div 
           className={`mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12 border-b pb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'} ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}
         >
@@ -342,7 +344,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
               <span className={`w-1 h-1 rounded-full ${isDarkMode ? 'bg-white' : 'bg-black'}`}></span>
               <p className={`uppercase tracking-[0.6em] text-[10px] font-mono ${isDarkMode ? 'text-zinc-500' : 'text-zinc-400'}`}>Workspace Log_v2.5</p>
             </div>
-            <h2 className="text-4xl md:text-7xl serif font-bold mb-4 italic leading-none">Pipeline Archive</h2>
+            <h2 className="text-4xl md:text-7xl serif font-bold mb-4 italic leading-none">The Archives</h2>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
@@ -366,7 +368,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
           </div>
         </div>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-32 transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-32 transition-all duration-500`}>
           {filteredItems.map((item, idx) => {
             const isLastOdd = filteredItems.length % 2 !== 0 && idx === filteredItems.length - 1;
             const totalAssets = 
@@ -381,8 +383,8 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
             return (
             <div 
               key={item.id} 
-              className={`group relative transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'} hover:-translate-y-4 ${isLastOdd ? 'lg:col-span-2 lg:w-[calc(50%-1.5rem)] lg:mx-auto' : ''}`}
-              style={{ transitionDelay: `${100 + (idx * 100)}ms` }}
+              className={`group relative transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${isVisible && !isTransitioning ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-[0.98]'} hover:-translate-y-4 ${isLastOdd ? 'lg:col-span-2 lg:w-[calc(50%-1.5rem)] lg:mx-auto' : ''}`}
+              style={{ transitionDelay: `${!isTransitioning ? 100 + (idx * 150) : 0}ms` }}
             >
               <div 
                 onClick={() => setSelectedProject(item)}
@@ -407,7 +409,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                   src={item.thumbnail} 
                   alt={item.title} 
                   referrerPolicy="no-referrer"
-                  className={`w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] scale-100 group-hover:scale-[1.05] ${isDarkMode ? 'opacity-80 group-hover:opacity-100' : 'opacity-100'}`}
+                  className={`w-full h-full ${item.category === 'CGI' ? 'object-cover' : 'object-contain'} grayscale group-hover:grayscale-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] scale-100 group-hover:scale-[1.03] ${isDarkMode ? 'opacity-80 group-hover:opacity-100' : 'opacity-100'}`}
                   style={{ willChange: 'transform, filter' }}
                 />
                 
@@ -441,7 +443,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
       {showUpload && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 animate-in fade-in duration-500">
           <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={() => setShowUpload(false)}></div>
-          <div className={`relative w-full max-w-2xl rounded-[2.5rem] border p-10 md:p-14 overflow-hidden ${isDarkMode ? 'glass border-white/10' : 'bg-white border-black/5'}`}>
+          <div className={`relative w-full max-w-[96vw] rounded-[2.5rem] border p-10 md:p-14 overflow-hidden ${isDarkMode ? 'glass border-white/10' : 'bg-white border-black/5'}`}>
             <h3 className="text-3xl serif italic font-bold mb-10">Inject New Asset</h3>
             <form onSubmit={handleAddProject} className="space-y-6 font-mono text-[10px]">
               <div className="grid grid-cols-2 gap-6">
@@ -466,7 +468,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                   <div className="flex flex-col space-y-4">
                     {newProject.thumbnail && (
                       <div className={`aspect-video w-full rounded-xl overflow-hidden border ${isDarkMode ? 'border-white/10' : 'border-black/10'}`}>
-                        <img src={newProject.thumbnail} className="w-full h-full object-cover" alt="Preview" />
+                        <img src={newProject.thumbnail} className="w-full h-full object-contain" alt="Preview" />
                       </div>
                     )}
                     <input type="file" accept="image/*" onChange={e => handleFileUpload(e, 'thumbnail')} className="hidden" id="thumb-up" />
@@ -521,7 +523,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
             onClick={() => setSelectedProject(null)}
           ></div>
           
-          <div className={`relative w-full max-w-7xl max-h-[95vh] overflow-hidden rounded-[2.5rem] border shadow-2xl transition-all duration-[800ms] cubic-bezier(0.23, 1, 0.32, 1) flex flex-col lg:flex-row ${isDarkMode ? 'glass border-white/10 text-white' : 'bg-white border-black/5 text-black'}`}>
+          <div className={`relative w-full max-w-[98vw] max-h-[95vh] overflow-hidden rounded-[2.5rem] border shadow-2xl transition-all duration-[800ms] cubic-bezier(0.23, 1, 0.32, 1) flex flex-col lg:flex-row ${isDarkMode ? 'glass border-white/10 text-white' : 'bg-white border-black/5 text-black'}`}>
             <button 
               onClick={() => setSelectedProject(null)}
               className="absolute top-8 right-8 z-30 p-3 rounded-full glass hover:scale-110 transition-transform duration-500"
@@ -610,14 +612,8 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
-                        drag="x"
-                        dragConstraints={{ left: 0, right: 0 }}
-                        onDragEnd={(_, info) => {
-                          if (info.offset.x > 100) prevAsset();
-                          else if (info.offset.x < -100) nextAsset();
-                        }}
                         transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                        className="w-full h-full cursor-grab active:cursor-grabbing"
+                        className="w-full h-full"
                       >
                         <iframe 
                           src={getGoogleDriveEmbedUrl(getActiveMediaArray(selectedProject, activeMediaType)![currentAssetIndex])}
@@ -684,14 +680,8 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      drag="x"
-                      dragConstraints={{ left: 0, right: 0 }}
-                      onDragEnd={(_, info) => {
-                        if (info.offset.x > 100) prevAsset();
-                        else if (info.offset.x < -100) nextAsset();
-                      }}
                       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                      className="w-full h-full cursor-grab active:cursor-grabbing"
+                      className="w-full h-full"
                     >
                       {isYouTubeUrl(getActiveMediaArray(selectedProject, activeMediaType)![currentAssetIndex]) ? (
                         <iframe 

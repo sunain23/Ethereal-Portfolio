@@ -6,6 +6,59 @@ interface AboutProps {
   isDarkMode: boolean;
 }
 
+const RevealSection = ({ title, items, isDarkMode }: { title: string, items: any[], isDarkMode: boolean }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref}>
+      <span className={`block text-[8px] uppercase tracking-[0.4em] text-gray-500 mb-12 font-mono transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        {title}
+      </span>
+      <div className="space-y-20">
+        {items.map((item, idx) => (
+          <div 
+            key={idx} 
+            className={`group relative transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
+            style={{ transitionDelay: isVisible ? `${300 + (idx * 300)}ms` : '0ms' }}
+          >
+            <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
+              <span className="text-[9px] font-mono tracking-[0.3em] text-emerald-500 mb-2 md:mb-0">{item.period}</span>
+              <h3 className="text-2xl md:text-3xl serif font-bold italic tracking-tight">{item.role}</h3>
+            </div>
+            <div className="flex items-center space-x-4 mb-6">
+              <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>{item.company}</span>
+              <div className={`h-px flex-1 transition-all duration-1000 ${isDarkMode ? 'bg-white/5 group-hover:bg-white/20' : 'bg-black/5 group-hover:bg-black/20'}`}></div>
+            </div>
+            <p className={`text-sm font-light leading-relaxed max-w-2xl transition-colors ${isDarkMode ? 'text-zinc-500 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600'}`}>
+              {item.description}
+            </p>
+            <div className={`absolute -left-8 top-0 bottom-0 w-px transition-all duration-700 ${isDarkMode ? 'bg-white/5 group-hover:bg-emerald-500/30' : 'bg-black/5 group-hover:bg-emerald-500/30'}`}></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const About: React.FC<AboutProps> = ({ isDarkMode }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -86,13 +139,22 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
     }
   ];
 
+  const education = [
+    {
+      period: '2021-2025',
+      role: 'B.Des in Animation & VFX',
+      company: 'ARTEMISIA COLLEGE OF ART & DESIGN',
+      description: 'Focused on cinematic storytelling, advanced editing workflows, and digital compositing. Graduated with honors.'
+    }
+  ];
+
   return (
     <section 
       id="about" 
       ref={sectionRef}
       className={`py-32 px-6 transition-colors duration-700 relative z-20 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
           
           {/* Header Column */}
@@ -151,36 +213,9 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
           </div>
 
           {/* Experience Column */}
-          <div className="lg:col-span-7 space-y-24">
-            <div>
-              <span className={`block text-[8px] uppercase tracking-[0.4em] text-gray-500 mb-12 font-mono transition-opacity duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-                // EXPERIENCE_LOG
-              </span>
-              <div className="space-y-20">
-                {experiences.map((exp, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`group relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-                    style={{ transitionDelay: `${400 + (idx * 150)}ms` }}
-                  >
-                    <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
-                      <span className="text-[9px] font-mono tracking-[0.3em] text-emerald-500 mb-2 md:mb-0">{exp.period}</span>
-                      <h3 className="text-2xl md:text-3xl serif font-bold italic tracking-tight">{exp.role}</h3>
-                    </div>
-                    <div className="flex items-center space-x-4 mb-6">
-                      <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>{exp.company}</span>
-                      <div className={`h-px flex-1 transition-all duration-1000 ${isDarkMode ? 'bg-white/5 group-hover:bg-white/20' : 'bg-black/5 group-hover:bg-black/20'}`}></div>
-                    </div>
-                    <p className={`text-sm font-light leading-relaxed max-w-2xl transition-colors ${isDarkMode ? 'text-zinc-500 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600'}`}>
-                      {exp.description}
-                    </p>
-                    <div className={`absolute -left-8 top-0 bottom-0 w-px transition-all duration-700 ${isDarkMode ? 'bg-white/5 group-hover:bg-emerald-500/30' : 'bg-black/5 group-hover:bg-emerald-500/30'}`}></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
+          <div className="lg:col-span-7 space-y-32">
+            <RevealSection title="// EXPERIENCE_LOG" items={experiences} isDarkMode={isDarkMode} />
+            <RevealSection title="// EDUCATION_LOG" items={education} isDarkMode={isDarkMode} />
           </div>
         </div>
       </div>

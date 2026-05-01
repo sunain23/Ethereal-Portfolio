@@ -84,7 +84,7 @@ const VideoLab: React.FC<VideoLabProps> = ({ isDarkMode }) => {
         }}
       ></div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="w-full relative z-10">
         <div className="mb-20">
           <div className="flex items-center space-x-6 mb-4">
              <div className={`w-12 h-px ${isDarkMode ? 'bg-white/10' : 'bg-black/10'}`}></div>

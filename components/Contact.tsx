@@ -7,6 +7,7 @@ interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
+  const [errors, setErrors] = useState<Partial<typeof formState>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -30,13 +31,52 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
     return () => observer.disconnect();
   }, []);
 
+  const validateField = (field: keyof typeof formState, value: string) => {
+    let error: string | undefined;
+    if (field === 'name' && !value.trim()) error = 'IDENTIFICATION_REQUIRED';
+    if (field === 'email' && (!value.trim() || !/^\S+@\S+\.\S+$/.test(value))) error = 'VALID_CONTACT_STUB_REQUIRED';
+    if (field === 'subject' && !value.trim()) error = 'PARAMETER_MISSING';
+    if (field === 'message' && !value.trim()) error = 'PAYLOAD_CANNOT_BE_EMPTY';
+    return error;
+  };
+
+  const validateForm = () => {
+    const newErrors: Partial<typeof formState> = {};
+    const nameError = validateField('name', formState.name);
+    if (nameError) newErrors.name = nameError;
+    const emailError = validateField('email', formState.email);
+    if (emailError) newErrors.email = emailError;
+    const subjectError = validateField('subject', formState.subject);
+    if (subjectError) newErrors.subject = subjectError;
+    const messageError = validateField('message', formState.message);
+    if (messageError) newErrors.message = messageError;
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof typeof formState, value: string) => {
+    setFormState({ ...formState, [field]: value });
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: undefined });
+    }
+  };
+
+  const handleBlur = (field: keyof typeof formState) => {
+    const error = validateField(field, formState[field]);
+    setErrors((prev) => ({ ...prev, [field]: error }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
       setFormState({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
     }, 1500);
   };
 
@@ -46,7 +86,7 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
       ref={sectionRef}
       className={`py-32 px-6 transition-colors duration-700 relative overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
           <div className={`space-y-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
             <div>
@@ -91,7 +131,7 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8" noValidate>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="relative group">
                     <label className="block text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-2 font-mono">// NAME</label>
@@ -99,10 +139,12 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
                       required
                       type="text"
                       value={formState.name}
-                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      onBlur={() => handleBlur('name')}
+                      className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${errors.name ? 'border-red-500/50 text-red-500 focus:border-red-500' : isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
                       placeholder="IDENTIFY"
                     />
+                    {errors.name && <p className="absolute -bottom-6 left-0 text-[8px] font-mono tracking-widest text-red-500">{errors.name}</p>}
                   </div>
                   <div className="relative group">
                     <label className="block text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-2 font-mono">// EMAIL</label>
@@ -110,10 +152,12 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
                       required
                       type="email"
                       value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      onBlur={() => handleBlur('email')}
+                      className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${errors.email ? 'border-red-500/50 text-red-500 focus:border-red-500' : isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
                       placeholder="CONTACT_STUB"
                     />
+                    {errors.email && <p className="absolute -bottom-6 right-0 text-[8px] font-mono tracking-widest text-red-500 text-right">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -123,10 +167,12 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
                     required
                     type="text"
                     value={formState.subject}
-                    onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
-                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
+                    onChange={(e) => handleInputChange('subject', e.target.value)}
+                    onBlur={() => handleBlur('subject')}
+                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm ${errors.subject ? 'border-red-500/50 text-red-500 focus:border-red-500' : isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
                     placeholder="SUBJECT_SCOPE"
                   />
+                  {errors.subject && <p className="absolute -bottom-6 left-0 text-[8px] font-mono tracking-widest text-red-500">{errors.subject}</p>}
                 </div>
 
                 <div className="relative group">
@@ -135,10 +181,12 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
                     required
                     rows={4}
                     value={formState.message}
-                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm resize-none ${isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
+                    onBlur={() => handleBlur('message')}
+                    className={`w-full bg-transparent border-b py-3 focus:outline-none transition-all duration-500 font-light text-sm resize-none ${errors.message ? 'border-red-500/50 text-red-500 focus:border-red-500' : isDarkMode ? 'border-white/10 focus:border-white' : 'border-black/10 focus:border-black'}`}
                     placeholder="DESCRIBE_VISION"
                   />
+                  {errors.message && <p className="absolute -bottom-6 right-0 text-[8px] font-mono tracking-widest text-red-500 text-right">{errors.message}</p>}
                 </div>
 
                 <button

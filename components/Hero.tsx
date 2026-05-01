@@ -15,8 +15,30 @@ const CountUp: React.FC<{
   const [count, setCount] = useState(0);
   const countRef = useRef(0);
   const startTimeRef = useRef<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
     let animationFrame: number;
 
     const animate = (timestamp: number) => {
@@ -46,18 +68,31 @@ const CountUp: React.FC<{
       cancelAnimationFrame(animationFrame);
       clearTimeout(timer);
     };
-  }, [end, duration, delay]);
+  }, [end, duration, delay, isVisible]);
 
-  return <span>{count.toFixed(decimals)}{suffix}</span>;
+  return <span ref={elementRef}>{count.toFixed(decimals)}{suffix}</span>;
 };
 
 const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
   const gridColor = isDarkMode ? '#fff' : '#000';
   
+  useEffect(() => {
+    const handleScroll = () => {
+      document.documentElement.style.setProperty('--scroll', window.scrollY.toString());
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial set
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section className="min-h-screen flex flex-col justify-center px-6 pt-32 pb-20 relative overflow-hidden">
       {/* Background Video Layer - High-end Minimalist Aesthetic */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div 
+        className="absolute -inset-20 z-0 pointer-events-none overflow-hidden"
+        style={{ transform: 'translateY(calc(var(--scroll) * 0.15px))' }}
+      >
         <video 
           autoPlay 
           muted 
@@ -76,17 +111,21 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
 
       {/* Background Grid Overlay */}
       <div 
-        className="absolute inset-0 z-[2] pointer-events-none opacity-[0.03] transition-colors duration-700 animate-grid" 
+        className="absolute -inset-20 z-[2] pointer-events-none opacity-[0.03] transition-colors duration-700 animate-grid" 
         style={{ 
           backgroundImage: `linear-gradient(${gridColor} 1px, transparent 1px), linear-gradient(90deg, ${gridColor} 1px, transparent 1px)`, 
-          backgroundSize: '100px 100px'
+          backgroundSize: '100px 100px',
+          transform: 'translateY(calc(var(--scroll) * -0.05px))'
         }}
       ></div>
       
-      <div className="relative z-10">
+      <div className="relative z-10 w-full">
         <div 
           className="flex items-center space-x-4 mb-8 animate-enter" 
-          style={{ animationDelay: '100ms' }}
+          style={{ 
+            animationDelay: '100ms',
+            transform: 'translateY(calc(var(--scroll) * 0.1px))'
+          }}
         >
           <div className={`w-2 h-2 rounded-full ${isDarkMode ? 'bg-white' : 'bg-black'}`}></div>
           <h2 className={`text-xs uppercase tracking-[0.6em] font-light font-mono ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -97,18 +136,24 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
         </div>
         
         <h1 
-          className="text-6xl md:text-[9rem] leading-[0.8] serif font-bold mb-12 max-w-7xl tracking-tighter animate-enter"
-          style={{ animationDelay: '300ms' }}
+          className="text-6xl md:text-[9rem] leading-[0.8] serif font-bold mb-12 w-full tracking-tighter animate-enter"
+          style={{ 
+            animationDelay: '300ms',
+            transform: 'translateY(calc(var(--scroll) * 0.4px))'
+          }}
         >
           <span className="font-['Instrument_Serif'] italic font-normal tracking-normal text-[1.15em] leading-[0.7] inline-block mb-2">Digital</span> <br /> 
           <span className={`transition-colors cursor-default ${isDarkMode ? 'text-white' : 'text-black'}`}>archive</span>.
         </h1>
         
-        <div 
-          className="flex flex-col md:flex-row md:items-end justify-between gap-12 max-w-7xl animate-enter"
-          style={{ animationDelay: '500ms' }}
-        >
-          <div className="space-y-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 w-full">
+          <div 
+            className="space-y-10 animate-enter"
+            style={{ 
+              animationDelay: '400ms',
+              transform: 'translateY(calc(var(--scroll) * 0.15px))'
+            }}
+          >
             <p className={`max-w-xl text-xl font-light leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
               Synthesizing complex VFX, high-fidelity CGI, and precision editing for global brand narratives. Translating conceptual physics into immersive digital reality.
             </p>
@@ -116,16 +161,22 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
             <div className="flex space-x-4">
               <button 
                 onClick={() => document.getElementById('work')?.scrollIntoView({behavior: 'smooth'})}
-                className={`group relative overflow-hidden px-10 py-5 rounded-full text-[10px] uppercase tracking-[0.4em] transition-all duration-500 hover:scale-105 active:scale-95 border ${isDarkMode ? 'glass border-white/10 hover:border-white/40' : 'bg-black text-white border-black hover:bg-zinc-800'}`}>
+                className={`group relative overflow-hidden px-10 py-5 rounded-full text-[10px] uppercase tracking-[0.4em] transition-all duration-500 animate-[breathe_4s_ease-in-out_infinite] hover:animate-none hover:scale-105 active:scale-95 border ${isDarkMode ? 'glass border-white/10 hover:border-white/40' : 'bg-black text-white border-black hover:bg-zinc-800'}`}>
                 <span className="relative z-10 flex items-center space-x-3">
-                  <span>Explore Archive</span>
+                  <span>Explore The Archives</span>
                   <div className={`w-1.5 h-1.5 rounded-full ${isDarkMode ? 'bg-white' : 'bg-white'}`}></div>
                 </span>
               </button>
             </div>
           </div>
           
-          <div className="flex space-x-12 font-mono">
+          <div 
+            className="flex space-x-12 font-mono animate-enter"
+            style={{ 
+              animationDelay: '500ms',
+              transform: 'translateY(calc(var(--scroll) * 0.25px))'
+            }}
+          >
              <div className="text-left">
                <span className="block text-2xl serif italic mb-1 min-w-[80px]">
                  <CountUp end={0.02} duration={2500} decimals={2} suffix="ms" delay={800} />
@@ -142,18 +193,12 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
         </div>
       </div>
       
-      <div 
-        className="mt-24 flex items-center space-x-4 animate-enter"
-        style={{ animationDelay: '700ms' }}
-      >
-        <div className={`w-12 h-12 rounded-full border flex items-center justify-center relative ${isDarkMode ? 'border-white/10' : 'border-black/10'}`}>
-           <div className={`absolute inset-[-4px] border rounded-full animate-[spin_10s_linear_infinite] ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}></div>
-           <svg className={`w-4 h-4 opacity-40 ${isDarkMode ? 'text-white' : 'text-black'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-           </svg>
-        </div>
-        <span className={`text-[10px] uppercase tracking-widest font-light ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>Decrypting Workspace</span>
-      </div>
+      <style>{`
+        @keyframes breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+      `}</style>
     </section>
   );
 };
