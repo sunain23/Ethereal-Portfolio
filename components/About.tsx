@@ -132,6 +132,12 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
       description: 'An expert blend of cinematic 3D visualization and high-energy editing, focused on creating seamless, high-fidelity digital narratives.'
     },
     {
+      period: '2025-2025',
+      role: 'Video Editor',
+      company: 'TIER2 DIGITAL',
+      description: 'High-impact B2B ads and testimonial narratives designed to drive measurable growth and engagement within the health and education sectors.'
+    },
+    {
       period: '2025-2026',
       role: 'Lead Video Editor',
       company: 'Canvas & Co.',
