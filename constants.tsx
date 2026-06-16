@@ -86,7 +86,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     id: 'EDIT-09',
     title: 'Visual Alchemy',
     category: 'Editorial',
-    thumbnail: 'https://lh3.googleusercontent.com/d/1U6Q2Zz1K2iygoS48xm83XFWm4AUIgb40',
+    thumbnail: 'https://lh3.googleusercontent.com/d/1LLAOCmhG3_5zYHildneqnnNBjX4q-xwy',
     gfx: [
       'https://drive.google.com/file/d/1CLHRoRIZX_w0QsWhjxE7scM3XT8PgJaR/view?usp=sharing',
       'https://drive.google.com/file/d/1Wxw0N0x4hOvWNAVkpViWf6Po5fTzUtBk/view?usp=sharing',

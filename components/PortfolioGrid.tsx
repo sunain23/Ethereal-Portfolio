@@ -409,7 +409,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                   src={item.thumbnail} 
                   alt={item.title} 
                   referrerPolicy="no-referrer"
-                  className={`w-full h-full ${item.category === 'CGI' ? 'object-cover' : 'object-contain'} grayscale group-hover:grayscale-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] scale-100 group-hover:scale-[1.03] ${isDarkMode ? 'opacity-80 group-hover:opacity-100' : 'opacity-100'}`}
+                  className={`w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] scale-100 group-hover:scale-[1.03] ${isDarkMode ? 'opacity-80 group-hover:opacity-100' : 'opacity-100'}`}
                   style={{ willChange: 'transform, filter' }}
                 />
                 
@@ -640,7 +640,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                           else if (info.offset.x < -100) nextAsset();
                         }}
                         transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                        className="w-full h-full object-contain lg:rounded-l-[2.5rem] cursor-grab active:cursor-grabbing"
+                        className="w-full h-full object-cover lg:rounded-l-[2.5rem] cursor-grab active:cursor-grabbing"
                       />
                     )}
                   </AnimatePresence>
@@ -708,7 +708,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                           autoPlay 
                           loop 
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-contain lg:rounded-l-[2.5rem]"
+                          className="w-full h-full object-cover lg:rounded-l-[2.5rem]"
                         />
                       )}
                     </motion.div>
@@ -767,7 +767,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                     autoPlay 
                     loop 
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain lg:rounded-l-[2.5rem]"
+                    className="w-full h-full object-cover lg:rounded-l-[2.5rem]"
                   />
                 )
               ) : (
@@ -775,7 +775,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                   src={selectedProject.thumbnail} 
                   alt={selectedProject.title} 
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-contain opacity-90 lg:rounded-l-[2.5rem]"
+                  className="w-full h-full object-cover opacity-90 lg:rounded-l-[2.5rem]"
                 />
               )}
             </div>

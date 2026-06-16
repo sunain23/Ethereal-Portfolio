@@ -62,7 +62,7 @@ const RevealSection = ({ title, items, isDarkMode }: { title: string, items: any
 const About: React.FC<AboutProps> = ({ isDarkMode }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string | null>('https://lh3.googleusercontent.com/d/10A5kzsYmUfFDAIrbv28CGXgwxnoVMsCz');
+  const [logoUrl, setLogoUrl] = useState<string | null>('https://lh3.googleusercontent.com/d/1YUhn-8THB57uMyGIHzyDZ5b3Ojf4CzKG');
   const [isGeneratingLogo, setIsGeneratingLogo] = useState(false);
   const [isHoveringIdentity, setIsHoveringIdentity] = useState(false);
   const [identityText, setIdentityText] = useState('SUNAIN, 23');
