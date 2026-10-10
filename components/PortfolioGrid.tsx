@@ -11,7 +11,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
   const [items, setItems] = useState<PortfolioItem[]>(PORTFOLIO_ITEMS);
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
   const [currentAssetIndex, setCurrentAssetIndex] = useState(0);
-  const [activeMediaType, setActiveMediaType] = useState<'images' | 'secondaryImages' | 'videos' | 'edits' | 'motionDesign' | 'reels' | 'gfx'>('videos');
+  const [activeMediaType, setActiveMediaType] = useState<'images' | 'secondaryImages' | 'videos' | 'edits' | 'motionDesign'>('videos');
 
   const getActiveMediaArray = (project: PortfolioItem | null, type: string) => {
     if (!project) return undefined;
@@ -21,8 +21,6 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
       case 'videos': return project.videos;
       case 'edits': return project.edits;
       case 'motionDesign': return project.motionDesign;
-      case 'reels': return project.reels;
-      case 'gfx': return project.gfx;
       default: return undefined;
     }
   };
@@ -44,20 +42,26 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
   useEffect(() => {
     setCurrentAssetIndex(0);
     if (selectedProject) {
-      if (selectedProject.id === 'PROC-08' && selectedProject.motionDesign && selectedProject.motionDesign.length > 0) {
-        setActiveMediaType('motionDesign');
+      if (selectedProject.title === 'Short Form') {
+        if (selectedProject.motionDesign && selectedProject.motionDesign.length > 0) {
+          setActiveMediaType('motionDesign');
+        } else if (selectedProject.edits && selectedProject.edits.length > 0) {
+          setActiveMediaType('edits');
+        } else if (selectedProject.videos && selectedProject.videos.length > 0) {
+          setActiveMediaType('videos');
+        } else if (selectedProject.images && selectedProject.images.length > 0) {
+          setActiveMediaType('images');
+        } else if (selectedProject.secondaryImages && selectedProject.secondaryImages.length > 0) {
+          setActiveMediaType('secondaryImages');
+        }
       } else if (selectedProject.videos && selectedProject.videos.length > 0) {
         setActiveMediaType('videos');
-      } else if (selectedProject.edits && selectedProject.edits.length > 0) {
-        setActiveMediaType('edits');
       } else if (selectedProject.motionDesign && selectedProject.motionDesign.length > 0) {
         setActiveMediaType('motionDesign');
-      } else if (selectedProject.reels && selectedProject.reels.length > 0) {
-        setActiveMediaType('reels');
+      } else if (selectedProject.edits && selectedProject.edits.length > 0) {
+        setActiveMediaType('edits');
       } else if (selectedProject.images && selectedProject.images.length > 0) {
         setActiveMediaType('images');
-      } else if (selectedProject.gfx && selectedProject.gfx.length > 0) {
-        setActiveMediaType('gfx');
       } else if (selectedProject.secondaryImages && selectedProject.secondaryImages.length > 0) {
         setActiveMediaType('secondaryImages');
       }
@@ -171,10 +175,9 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
 
   const categories = [
     { label: 'All', value: 'All' },
-    { label: 'VFX', value: 'VFX Compositing' },
-    { label: 'CGI', value: 'CGI' },
     { label: 'Edit', value: 'Editorial' },
-    { label: 'AI', value: 'Visual Prompting' },
+    { label: 'CGI', value: 'CGI' },
+    { label: 'VFX', value: 'VFX Compositing' },
   ];
 
   const filteredItems = useMemo(() => {
@@ -332,12 +335,12 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
   return (
     <section 
       id="work" 
-      ref={sectionRef}
-      className={`py-32 px-6 transition-colors duration-700 relative z-20 ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+      ref={sectionRef} 
+      className={`py-20 md:py-24 px-6 transition-colors duration-700 relative z-20 ${isDarkMode ? 'bg-black' : 'bg-white'}`}
     >
       <div className="w-full">
         <div 
-          className={`mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12 border-b pb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'} ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}
+          className={`mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b pb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'} ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}
         >
           <div className="max-w-xl">
             <div className="flex items-center space-x-3 mb-6">
@@ -368,7 +371,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
           </div>
         </div>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-32 transition-all duration-500`}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-12 md:gap-y-16 transition-all duration-500`}>
           {filteredItems.map((item, idx) => {
             const isLastOdd = filteredItems.length % 2 !== 0 && idx === filteredItems.length - 1;
             const totalAssets = 
@@ -376,9 +379,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
               (item.secondaryImages?.length || 0) + 
               (item.videos?.length || 0) + 
               (item.edits?.length || 0) + 
-              (item.motionDesign?.length || 0) + 
-              (item.reels?.length || 0) + 
-              (item.gfx?.length || 0);
+              (item.motionDesign?.length || 0);
               
             return (
             <div 
@@ -388,10 +389,10 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
             >
               <div 
                 onClick={() => setSelectedProject(item)}
-                className={`relative aspect-[16/9] overflow-hidden rounded-[2.5rem] mb-8 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] border cursor-pointer ${isDarkMode ? 'bg-zinc-900 border-white/5 hover:border-white/30 hover:bg-zinc-800 shadow-[0_0_0_rgba(255,255,255,0)] hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.05)]' : 'bg-zinc-100 border-black/5 hover:border-black/20 hover:bg-white hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]'}`}
+                className={`relative aspect-[16/9] overflow-hidden rounded-[2.5rem] mb-5 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] border cursor-pointer ${isDarkMode ? 'bg-zinc-900 border-white/5 hover:border-white/30 hover:bg-zinc-800 shadow-[0_0_0_rgba(255,255,255,0)] hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.05)]' : 'bg-zinc-100 border-black/5 hover:border-black/20 hover:bg-white hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]'}`}
               >
                 <div className={`absolute top-0 left-0 px-4 py-2 z-10 text-[9px] font-mono border-b border-r opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-tl-[2.5rem] ${isDarkMode ? 'glass border-white/10' : 'bg-white/80 border-black/10 backdrop-blur-md'}`}>
-                  ID: {item.id} // SOURCE: {item.images && item.images.length > 0 ? 'GALLERY' : (isYouTubeUrl(item.videoPreview) ? 'YOUTUBE' : 'LOCAL')}
+                  ID: {item.id} // SOURCE: {item.images && item.images.length > 0 ? 'GALLERY' : (isYouTubeUrl(item.videoPreview) ? 'YOUTUBE' : (isGoogleDriveUrl(item.videoPreview) ? 'DRIVE' : 'LOCAL'))}
                 </div>
 
                 {totalAssets > 0 && (
@@ -428,7 +429,12 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                     </span>
                     <div className={`h-px flex-1 transition-all duration-1000 ${isDarkMode ? 'bg-white/5 group-hover:bg-white/20' : 'bg-black/5 group-hover:bg-black/20'}`}></div>
                   </div>
-                  <h3 className="text-2xl md:text-3xl serif font-bold mb-4 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-2">{item.title}</h3>
+                  <h3 
+                    onClick={() => setSelectedProject(item)} 
+                    className="text-2xl md:text-3xl serif font-bold mb-4 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-2 cursor-pointer"
+                  >
+                    {item.title}
+                  </h3>
                   <p className={`text-sm font-light leading-relaxed transition-colors duration-500 ${isDarkMode ? 'text-zinc-500' : 'text-zinc-400'}`}>{item.description}</p>
                 </div>
                 
@@ -539,25 +545,23 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                 (selectedProject.secondaryImages && selectedProject.secondaryImages.length > 0 ? 1 : 0) +
                 (selectedProject.videos && selectedProject.videos.length > 0 ? 1 : 0) +
                 (selectedProject.edits && selectedProject.edits.length > 0 ? 1 : 0) +
-                (selectedProject.motionDesign && selectedProject.motionDesign.length > 0 ? 1 : 0) +
-                (selectedProject.reels && selectedProject.reels.length > 0 ? 1 : 0) +
-                (selectedProject.gfx && selectedProject.gfx.length > 0 ? 1 : 0)
+                (selectedProject.motionDesign && selectedProject.motionDesign.length > 0 ? 1 : 0)
               ) > 1 && (
                 <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 flex space-x-2 glass rounded-full p-1">
-                  {selectedProject.motionDesign && selectedProject.motionDesign.length > 0 && (
-                    <button 
-                      onClick={() => { setActiveMediaType('motionDesign'); setCurrentAssetIndex(0); }}
-                      className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'motionDesign' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
-                    >
-                      Motion Design
-                    </button>
-                  )}
                   {selectedProject.videos && selectedProject.videos.length > 0 && (
                     <button 
                       onClick={() => { setActiveMediaType('videos'); setCurrentAssetIndex(0); }}
                       className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'videos' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
                     >
                       {selectedProject.title === 'Short Films' ? 'Films' : 'Videos'}
+                    </button>
+                  )}
+                  {selectedProject.motionDesign && selectedProject.motionDesign.length > 0 && (
+                    <button 
+                      onClick={() => { setActiveMediaType('motionDesign'); setCurrentAssetIndex(0); }}
+                      className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'motionDesign' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
+                    >
+                      Motion Design
                     </button>
                   )}
                   {selectedProject.edits && selectedProject.edits.length > 0 && (
@@ -568,28 +572,12 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                       Edits
                     </button>
                   )}
-                  {selectedProject.reels && selectedProject.reels.length > 0 && (
-                    <button 
-                      onClick={() => { setActiveMediaType('reels'); setCurrentAssetIndex(0); }}
-                      className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'reels' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
-                    >
-                      Reels
-                    </button>
-                  )}
                   {selectedProject.images && selectedProject.images.length > 0 && (
                     <button 
                       onClick={() => { setActiveMediaType('images'); setCurrentAssetIndex(0); }}
                       className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'images' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
                     >
-                      {selectedProject.title === 'Short Films' ? 'Frames' : selectedProject.title === 'Ad Campaigns' ? 'Ad #1' : 'Images'}
-                    </button>
-                  )}
-                  {selectedProject.gfx && selectedProject.gfx.length > 0 && (
-                    <button 
-                      onClick={() => { setActiveMediaType('gfx'); setCurrentAssetIndex(0); }}
-                      className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'gfx' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
-                    >
-                      {selectedProject.title === 'Ad Campaigns' ? 'Ad #2' : 'GFX'}
+                      {selectedProject.title === 'Short Films' ? 'Frames' : 'Images'}
                     </button>
                   )}
                   {selectedProject.secondaryImages && selectedProject.secondaryImages.length > 0 && (
@@ -597,13 +585,13 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                       onClick={() => { setActiveMediaType('secondaryImages'); setCurrentAssetIndex(0); }}
                       className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${activeMediaType === 'secondaryImages' ? 'bg-white text-black' : 'text-white/60 hover:text-white'}`}
                     >
-                      {selectedProject.title === 'Ad Campaigns' ? 'Ad #3' : 'Secondary'}
+                      Secondary
                     </button>
                   )}
                 </div>
               )}
 
-              {['images', 'secondaryImages', 'gfx'].includes(activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType)!.length > 0 ? (
+              {['images', 'secondaryImages'].includes(activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType)!.length > 0 ? (
                 <div className="relative w-full h-full flex items-center justify-center">
                   <AnimatePresence mode="wait">
                     {isGoogleDriveUrl(getActiveMediaArray(selectedProject, activeMediaType)![currentAssetIndex]) ? (
@@ -672,7 +660,7 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                     </>
                   )}
                 </div>
-              ) : ['videos', 'edits', 'motionDesign', 'reels'].includes(activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType)!.length > 0 ? (
+              ) : ['videos', 'edits', 'motionDesign'].includes(activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType) && getActiveMediaArray(selectedProject, activeMediaType)!.length > 0 ? (
                 <div className="relative w-full h-full flex items-center justify-center">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -793,8 +781,6 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                    (activeMediaType === 'secondaryImages' && selectedProject.secondaryImageTitles?.[currentAssetIndex]) ||
                    (activeMediaType === 'edits' && selectedProject.editsTitles?.[currentAssetIndex]) ||
                    (activeMediaType === 'motionDesign' && selectedProject.motionDesignTitles?.[currentAssetIndex]) ||
-                   (activeMediaType === 'reels' && selectedProject.reelsTitles?.[currentAssetIndex]) ||
-                   (activeMediaType === 'gfx' && selectedProject.gfxTitles?.[currentAssetIndex]) ||
                    selectedProject.title}
                 </h3>
                 <div className="space-y-10">
@@ -806,8 +792,6 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                        (activeMediaType === 'secondaryImages' && selectedProject.secondaryImageDescriptions?.[currentAssetIndex]) ||
                        (activeMediaType === 'edits' && selectedProject.editsDescriptions?.[currentAssetIndex]) ||
                        (activeMediaType === 'motionDesign' && selectedProject.motionDesignDescriptions?.[currentAssetIndex]) ||
-                       (activeMediaType === 'reels' && selectedProject.reelsDescriptions?.[currentAssetIndex]) ||
-                       (activeMediaType === 'gfx' && selectedProject.gfxDescriptions?.[currentAssetIndex]) ||
                        selectedProject.description}
                     </p>
                   </div>
@@ -818,8 +802,18 @@ const PortfolioGrid: React.FC<PortfolioGridProps> = ({ isDarkMode }) => {
                     </div>
                     <div>
                       <span className="block text-[8px] uppercase tracking-[0.4em] text-gray-500 mb-3 font-mono">// SOURCE_TYPE</span>
-                      <p className={`text-[11px] uppercase tracking-widest font-bold ${isYouTubeUrl(selectedProject.videoPreview) ? 'text-red-500' : 'text-emerald-500'}`}>
-                        {isYouTubeUrl(selectedProject.videoPreview) ? 'EXTERNAL_YOUTUBE' : 'INTERNAL_NATIVE'}
+                      <p className={`text-[11px] uppercase tracking-widest font-bold ${
+                        isYouTubeUrl(selectedProject.videoPreview) 
+                          ? 'text-red-500' 
+                          : isGoogleDriveUrl(selectedProject.videoPreview) 
+                            ? 'text-sky-400' 
+                            : 'text-emerald-500'
+                      }`}>
+                        {isYouTubeUrl(selectedProject.videoPreview) 
+                          ? 'EXTERNAL_YOUTUBE' 
+                          : isGoogleDriveUrl(selectedProject.videoPreview) 
+                            ? 'GOOGLE_DRIVE' 
+                            : 'INTERNAL_NATIVE'}
                       </p>
                     </div>
                   </div>

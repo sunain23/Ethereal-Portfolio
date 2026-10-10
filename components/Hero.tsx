@@ -146,37 +146,43 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode }) => {
           <span className={`transition-colors cursor-default ${isDarkMode ? 'text-white' : 'text-black'}`}>archive</span>.
         </h1>
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 w-full">
-          <div 
-            className="space-y-10 animate-enter"
-            style={{ 
-              animationDelay: '400ms',
-              transform: 'translateY(calc(var(--scroll) * 0.15px))'
-            }}
-          >
-            <p className={`max-w-xl text-xl font-light leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              Synthesizing complex VFX, high-fidelity CGI, and precision editing for global brand narratives. Translating conceptual physics into immersive digital reality.
-            </p>
-            
-            <div className="flex space-x-4">
-              <button 
-                onClick={() => document.getElementById('work')?.scrollIntoView({behavior: 'smooth'})}
-                className={`group relative overflow-hidden px-10 py-5 rounded-full text-[10px] uppercase tracking-[0.4em] transition-all duration-500 animate-[breathe_4s_ease-in-out_infinite] hover:animate-none hover:scale-105 active:scale-95 border ${isDarkMode ? 'glass border-white/10 hover:border-white/40' : 'bg-black text-white border-black hover:bg-zinc-800'}`}>
-                <span className="relative z-10 flex items-center space-x-3">
-                  <span>Explore The Archives</span>
-                  <div className={`w-1.5 h-1.5 rounded-full ${isDarkMode ? 'bg-white' : 'bg-white'}`}></div>
-                </span>
-              </button>
-            </div>
+        {/* Full-width statement spanning left to right in two lines */}
+        <div 
+          className="w-full mb-12 animate-enter"
+          style={{ 
+            animationDelay: '400ms',
+            transform: 'translateY(calc(var(--scroll) * 0.15px))'
+          }}
+        >
+          <p className={`text-sm sm:text-base md:text-lg lg:text-[1.15rem] font-light leading-relaxed tracking-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className="block">
+              Blending CGI, VFX, and cinematic editing to craft compelling stories and elevate visual storytelling.
+            </span>
+            <span className="block mt-1">
+              Turning ideas into immersive visual experiences that captivate, communicate, and inspire.
+            </span>
+          </p>
+        </div>
+
+        <div 
+          className="flex flex-col md:flex-row md:items-center justify-between gap-8 w-full animate-enter"
+          style={{ 
+            animationDelay: '500ms',
+            transform: 'translateY(calc(var(--scroll) * 0.25px))'
+          }}
+        >
+          <div className="flex space-x-4">
+            <button 
+              onClick={() => document.getElementById('work')?.scrollIntoView({behavior: 'smooth'})}
+              className={`group relative overflow-hidden px-10 py-5 rounded-full text-[10px] uppercase tracking-[0.4em] transition-all duration-500 animate-[breathe_4s_ease-in-out_infinite] hover:animate-none hover:scale-105 active:scale-95 border ${isDarkMode ? 'glass border-white/10 hover:border-white/40' : 'bg-black text-white border-black hover:bg-zinc-800'}`}>
+              <span className="relative z-10 flex items-center space-x-3">
+                <span>Explore The Archives</span>
+                <div className={`w-1.5 h-1.5 rounded-full ${isDarkMode ? 'bg-white' : 'bg-white'}`}></div>
+              </span>
+            </button>
           </div>
           
-          <div 
-            className="flex space-x-12 font-mono animate-enter"
-            style={{ 
-              animationDelay: '500ms',
-              transform: 'translateY(calc(var(--scroll) * 0.25px))'
-            }}
-          >
+          <div className="flex space-x-12 font-mono">
              <div className="text-left">
                <span className="block text-2xl serif italic mb-1 min-w-[80px]">
                  <CountUp end={0.02} duration={2500} decimals={2} suffix="ms" delay={800} />

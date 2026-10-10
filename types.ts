@@ -34,12 +34,6 @@ export interface PortfolioItem {
   motionDesign?: string[];
   motionDesignDescriptions?: string[];
   motionDesignTitles?: string[];
-  reels?: string[];
-  reelsDescriptions?: string[];
-  reelsTitles?: string[];
-  gfx?: string[];
-  gfxDescriptions?: string[];
-  gfxTitles?: string[];
   description: string;
   tools: string[];
 }

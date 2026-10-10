@@ -30,21 +30,21 @@ const RevealSection = ({ title, items, isDarkMode }: { title: string, items: any
 
   return (
     <div ref={ref}>
-      <span className={`block text-[8px] uppercase tracking-[0.4em] text-gray-500 mb-12 font-mono transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <span className={`block text-[8px] uppercase tracking-[0.4em] text-gray-500 mb-6 font-mono transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         {title}
       </span>
-      <div className="space-y-20">
+      <div className="space-y-10 md:space-y-12">
         {items.map((item, idx) => (
           <div 
             key={idx} 
             className={`group relative transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
             style={{ transitionDelay: isVisible ? `${300 + (idx * 300)}ms` : '0ms' }}
           >
-            <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
-              <span className="text-[9px] font-mono tracking-[0.3em] text-emerald-500 mb-2 md:mb-0">{item.period}</span>
+            <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
+              <span className="text-[9px] font-mono tracking-[0.3em] text-emerald-500 mb-1 md:mb-0">{item.period}</span>
               <h3 className="text-2xl md:text-3xl serif font-bold italic tracking-tight">{item.role}</h3>
             </div>
-            <div className="flex items-center space-x-4 mb-6">
+            <div className="flex items-center space-x-4 mb-4">
               <span className={`text-[10px] uppercase tracking-[0.2em] font-bold ${isDarkMode ? 'text-white/60' : 'text-black/60'}`}>{item.company}</span>
               <div className={`h-px flex-1 transition-all duration-1000 ${isDarkMode ? 'bg-white/5 group-hover:bg-white/20' : 'bg-black/5 group-hover:bg-black/20'}`}></div>
             </div>
@@ -126,22 +126,28 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
 
   const experiences = [
     {
-      period: '2021 — PRESENT',
-      role: 'Freelancer',
-      company: 'INDEPENDENT',
-      description: 'An expert blend of cinematic 3D visualization and high-energy editing, focused on creating seamless, high-fidelity digital narratives.'
+      period: '2026 — PRESENT',
+      role: 'Senior Video Editor',
+      company: 'HOUSE OF EDTECH',
+      description: 'Spearheaded organic content editing initiatives while managing and mentoring a team of video editors. Oversaw creative workflows and quality control to ensure consistent, high-quality deliverables.'
     },
     {
-      period: '2025-2025',
+      period: '2025 — 2026',
+      role: 'Lead Video Editor',
+      company: 'CANVAS & CO.',
+      description: 'Driving high-impact narrative flow for global commercial campaigns. Specialized in multi-track non-linear workflows and seamless integration of dynamic motion graphics.'
+    },
+    {
+      period: '2025 — 2025',
       role: 'Video Editor',
       company: 'TIER2 DIGITAL',
       description: 'High-impact B2B ads and testimonial narratives designed to drive measurable growth and engagement within the health and education sectors.'
     },
     {
-      period: '2025-2026',
-      role: 'Lead Video Editor',
-      company: 'Canvas & Co.',
-      description: 'Driving high-impact narrative flow for global commercial campaigns. Specialized in multi-track non-linear workflows and seamless integration of dynamic motion graphics.'
+      period: '2021 — PRESENT',
+      role: 'Freelancer',
+      company: 'INDEPENDENT',
+      description: 'An expert blend of cinematic 3D visualization and high-energy editing, focused on creating seamless, high-fidelity digital narratives.'
     }
   ];
 
@@ -157,11 +163,11 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
   return (
     <section 
       id="about" 
-      ref={sectionRef}
-      className={`py-32 px-6 transition-colors duration-700 relative z-20 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+      ref={sectionRef} 
+      className={`py-20 md:py-24 px-6 transition-colors duration-700 relative z-20 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
     >
       <div className="w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Header Column */}
           <div className={`lg:col-span-5 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
@@ -219,7 +225,7 @@ const About: React.FC<AboutProps> = ({ isDarkMode }) => {
           </div>
 
           {/* Experience Column */}
-          <div className="lg:col-span-7 space-y-32">
+          <div className="lg:col-span-7 space-y-14 md:space-y-16">
             <RevealSection title="// EXPERIENCE_LOG" items={experiences} isDarkMode={isDarkMode} />
             <RevealSection title="// EDUCATION_LOG" items={education} isDarkMode={isDarkMode} />
           </div>
